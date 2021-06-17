@@ -6,7 +6,11 @@ router.get('/items', passport.authenticate('jwt'), (req, res) => {
   res.json(req.user.items)
 })
 
-router.post('/items', passport.authenticate('jwt'), (req, res) => Item.create(req.body)
+router.post('/items', passport.authenticate('jwt'), (req, res) => Item.create({
+  text: req.body.text,
+  isDone: req.body.isDone,
+  uid: req.user.id
+})
   .then(item => res.json(item))
   .catch(err => console.log(err)))
 
