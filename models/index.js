@@ -3,4 +3,4 @@ const User = require('./User.js')
 
 User.hasMany(Item, { foreignKey: 'uid' })
 
-module.exports = { Item }
+module.exports = { Item, User }
