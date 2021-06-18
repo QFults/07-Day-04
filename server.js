@@ -42,7 +42,11 @@ passport.use(new FacebookStrategy({
 }, (accessToken, refreshToken, profile, cb) => User.findOrCreate({
   where: {
     facebookId: profile.id,
-    name: profile.displayName
+    name: profile.displayName,
+    username: profile.displayName,
+    email: '',
+    hash: '',
+    salt: ''
   }
 })
   .then(res => cb(null, res[0]))
