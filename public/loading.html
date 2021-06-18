@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Loading...</h1>
+  <script>
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+          vars[key] = value;
+        });
+        return vars;
+      }
+
+      function getUrlParam(parameter, defaultvalue) {
+        var urlparameter = defaultvalue;
+        if (window.location.href.indexOf(parameter) > -1) {
+          urlparameter = getUrlVars()[parameter];
+        }
+        return urlparameter;
+      }
+
+      let token = getUrlParam('token', null)
+      token = token.slice(0, token.length - 4)
+
+      localStorage.setItem('token', token)
+      window.location = '/'
+  </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ const { join } = require('path')
 const passport = require('passport')
 const { User, Item } = require('./models')
 const { Strategy: JWTStrategy, ExtractJwt } = require('passport-jwt')
+const { Strategy: FacebookStrategy } = require('passport-facebook')
 
 const app = express()
 
@@ -32,6 +33,19 @@ passport.use(new JWTStrategy({
   secretOrKey: process.env.SECRET
 }, ({ id }, cb) => User.findOne({ where: { id }, include: [Item] })
   .then(user => cb(null, user))
+  .catch(err => cb(err, null))))
+
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: 'https://shrouded-refuge-67086.herokuapp.com/api/users/facebook/callback'
+}, (accessToken, refreshToken, profile, cb) => User.findOrCreate({
+  where: {
+    facebookId: profile.id,
+    name: profile.displayName
+  }
+})
+  .then(res => cb(null, res[0]))
   .catch(err => cb(err, null))))
 
 app.use(require('./routes'))

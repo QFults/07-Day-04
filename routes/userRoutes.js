@@ -1,6 +1,13 @@
 const router = require('express').Router()
 const { User } = require('../models')
+const passport = require('passport')
 const jwt = require('jsonwebtoken')
+
+router.get('/users/facebook', passport.authenticate('facebook'))
+
+router.get('/users/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login.html' }), (req, res) => {
+  res.redirect(`/loading.html?token=${jwt.sign({ id: req.user.id }, process.env.SECRET)}`)
+})
 
 router.post('/users/register', (req, res) => {
   const { name, email, username } = req.body
